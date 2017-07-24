@@ -1,14 +1,19 @@
 class Hero {
-  constructor() {
+  constructor( x=50, y=250) {
     this.speed = 256
-    this.x = 50
-    this.y = 250
+    this.x = x
+    this.y = y
     this.width = 70
     this.height = 80
     this.imageReady = false
     this.status = 'normal'
     this.maxHP = canvas.width/3
     this.hp = canvas.width/3
+    this.heroImage = new Image()
+    this.heroImage.onload = () => {
+        this.imageReady = true
+    }
+    this.heroImage.src = "images/monkey_left.png"
   }
 
   injuried() {
@@ -57,7 +62,7 @@ class Hero {
 
   draw() {
     if(this.imageReady) {
-      ctx.drawImage(heroImage, this.x, this.y, this.width, this.height)
+      ctx.drawImage(this.heroImage, this.x, this.y, this.width, this.height)
     }
   }
 }

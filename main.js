@@ -103,9 +103,10 @@ function render() {
   if(bgReady){
     ctx.drawImage(bgImage, 0, 0)
   }
-  if(heroReady){
-    ctx.drawImage(heroImage, hero.x, hero.y, hero.width, hero.height)
-  }
+  hero.draw()
+  // if(heroReady){
+  //   ctx.drawImage(heroImage, hero.x, hero.y, hero.width, hero.height)
+  // }
   if(monsterReady){
     // ctx.rotate(20 * Math.PI/180)
     ctx.drawImage(monsterImage, monster.x, monster.y, monster.width, monster.height)
