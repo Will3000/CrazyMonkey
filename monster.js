@@ -1,17 +1,22 @@
-class Monster {
+class Monster extends Monkey{
   constructor() {
-    this.speed = 100
-    this.x = 0
-    this.y = 0
-    this.width = 70
-    this.height = 80
-    this.rotate = 0
+    super("images/monkey_right.png", 100)
+    this.direction = "left"
   }
 
   die() {
     this.x = 0
     this.y = 0
-    // this.rotate = 90
+  }
 
+  draw() {
+    if(this.imageReady) {
+      if(this.direction == 'right') {
+        this.heroImage.src = "images/monkey_left.png"
+      } else {
+        this.heroImage.src = "images/monkey_right.png"
+      }
+      ctx.drawImage(this.heroImage, this.x, this.y, this.width, this.height)
+    }
   }
 }

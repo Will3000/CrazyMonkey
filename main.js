@@ -20,21 +20,6 @@ bgImage.onload = () => {
 }
 bgImage.src = "images/background.png"
 
-let heroReady = false
-let heroImage = new Image()
-heroImage.onload = () => {
-    heroReady = true
-}
-heroImage.src = "images/monkey_left.png"
-
-
-let monsterReady = false
-let monsterImage = new Image()
-monsterImage.onload = () => {
-    monsterReady = true
-}
-monsterImage.src = "images/monkey_right.png"
-
 
 let hero = new Hero()
 let monster = new Monster()
@@ -69,10 +54,12 @@ function update(modifier) {
 
     if (playerKeys.left in keysDown) {
       hero.x -= hero.speed * modifier
+      hero.direction = "left"
     }
 
     if (playerKeys.right in keysDown) {
       hero.x += hero.speed * modifier
+      hero.direction = "right"
     }
 
     if (playerKeys.attack in keysDown) {
@@ -80,9 +67,11 @@ function update(modifier) {
     }
     // monster movement
     if (hero.x < monster.x) {
+      monster.direction = "left"
       monster.x -= monster.speed * modifier
     }
     if (hero.x > monster.x) {
+      monster.direction = "right"
       monster.x += monster.speed * modifier
     }
     if (hero.y < monster.y) {
@@ -92,9 +81,20 @@ function update(modifier) {
       monster.y += monster.speed * modifier
     }
     // If they are touching
-
+    if(hero.weapon) {
+      if(hero.weapon.direction == "left") {
+        hero.weapon.x -= hero.weapon.speed * modifier
+      }
+      if(hero.weapon.direction == "right") {
+        hero.weapon.x += hero.weapon.speed * modifier
+      }
+      if(hero.weapon.isCloseTo(monster)){
+        monster.die()
+        hero.weapon = null
+      }
+    }
+    
     if(hero.isCloseTo(monster)) {
-      // -hp effect
       hero.injuried()
     }
 }
@@ -104,13 +104,7 @@ function render() {
     ctx.drawImage(bgImage, 0, 0)
   }
   hero.draw()
-  // if(heroReady){
-  //   ctx.drawImage(heroImage, hero.x, hero.y, hero.width, hero.height)
-  // }
-  if(monsterReady){
-    // ctx.rotate(20 * Math.PI/180)
-    ctx.drawImage(monsterImage, monster.x, monster.y, monster.width, monster.height)
-  }
+  monster.draw()
   hero.updateHpBar()
 }
 

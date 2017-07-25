@@ -1,23 +1,55 @@
-class Hero {
-  constructor( x=50, y=250) {
-    this.speed = 256
+class Weapon {
+  constructor(x, y) {
     this.x = x
     this.y = y
-    this.width = 70
-    this.height = 80
+    this.width = 30
+    this.height = 30
+    this.speed = 604
     this.imageReady = false
+    this.direction = null
+    this.weaponImage = new Image()
+    this.weaponImage.onload = () => {
+        this.imageReady = true
+    }
+    this.weaponImage.src = "images/banana.png"
+  }
+
+  isCloseTo(monster, range = 20) {
+    if(
+      this.x <= (monster.x + range)
+      && monster.x <= (this.x + range)
+      && this.y <= (monster.y + range)
+      && monster.y <= (this.y + range)
+    ) {
+      return true
+    } else {
+      return false
+    }
+  }
+
+  draw(x, y) {
+    if(this.imageReady && this.direction) {
+      // if(x && y){
+      //   this.y = y
+      //   this.x = x
+      // }
+      this.weaponImage.src = "images/banana.png"
+      ctx.drawImage(this.weaponImage, this.x + 50, this.y , this.width, this.height)
+    }
+  }
+}
+
+class Hero extends Monkey{
+  constructor() {
+    super("images/monkey_left.png")
     this.status = 'normal'
     this.maxHP = canvas.width/3
     this.hp = canvas.width/3
-    this.heroImage = new Image()
-    this.heroImage.onload = () => {
-        this.imageReady = true
-    }
-    this.heroImage.src = "images/monkey_left.png"
+    this.direction = "right"
   }
 
   injuried() {
-    if(this.status=='normal'){
+    if(this.status!='injuried'){
       this.status = 'injuried'
       this.hp = this.hp - (0.2 * this.maxHP)
 
@@ -37,9 +69,18 @@ class Hero {
   }
 
   attack(monster){
-    if(this.isCloseTo(monster, 64)){
-      monster.die()
+    if(this.status=="normal"){
+      this.weapon = new Weapon(this.x, this.y)
+      this.weapon.direction = this.direction
+      this.status="attacking"
+
+      setTimeout(()=>{
+        this.status = 'normal'
+      }, 1 * 1000)
     }
+    // if(this.isCloseTo(monster, 64)){
+    //   monster.die()
+    // }
   }
 
   die() {
@@ -62,7 +103,14 @@ class Hero {
 
   draw() {
     if(this.imageReady) {
+      if(this.direction == 'right') {
+        this.heroImage.src = "images/monkey_left.png"
+      } else {
+        this.heroImage.src = "images/monkey_right.png"
+      }
       ctx.drawImage(this.heroImage, this.x, this.y, this.width, this.height)
     }
+    if(this.weapon)
+      this.weapon.draw(this.x, this.y)
   }
 }
