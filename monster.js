@@ -1,6 +1,12 @@
 class Monster extends Monkey{
-  constructor() {
-    super("images/monkey_right.png", 100)
+  constructor(x, y) {
+    let params = {
+      x : x,
+      y : y,
+      src : "images/monkey_right.png",
+      speed: 100
+    }
+    super(params)
     this.direction = "left"
   }
 

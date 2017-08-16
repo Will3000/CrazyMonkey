@@ -29,19 +29,19 @@ class Weapon {
 
   draw(x, y) {
     if(this.imageReady && this.direction) {
-      // if(x && y){
-      //   this.y = y
-      //   this.x = x
-      // }
-      this.weaponImage.src = "images/banana.png"
       ctx.drawImage(this.weaponImage, this.x + 50, this.y , this.width, this.height)
     }
   }
 }
 
 class Hero extends Monkey{
-  constructor() {
-    super("images/monkey_left.png")
+  constructor(x, y) {
+    let params = {
+      x : x,
+      y : y,
+      src : "images/monkey_left.png"
+    }
+    super(params)
     this.status = 'normal'
     this.maxHP = canvas.width/3
     this.hp = canvas.width/3
@@ -68,7 +68,7 @@ class Hero extends Monkey{
     ctx.fillRect(10, 10, this.hp, 25)
   }
 
-  attack(monster){
+  attack(){
     if(this.status=="normal"){
       this.weapon = new Weapon(this.x, this.y)
       this.weapon.direction = this.direction
@@ -78,9 +78,6 @@ class Hero extends Monkey{
         this.status = 'normal'
       }, 1 * 1000)
     }
-    // if(this.isCloseTo(monster, 64)){
-    //   monster.die()
-    // }
   }
 
   die() {

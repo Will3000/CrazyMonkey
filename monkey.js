@@ -1,8 +1,11 @@
 class Monkey {
-	constructor(src, speed=256) {
-		this.speed = speed
-		this.x = 0
-		this.y = 0
+	constructor(params) {
+		if(!params.src){
+			console.log("src is missing")
+		}
+		this.speed = params.speed || 256
+		this.x = params.x || 0
+		this.y = params.y || 0
 		this.width = 70
 		this.height = 80
 	    this.imageReady = false
@@ -10,6 +13,6 @@ class Monkey {
 	    this.heroImage.onload = () => {
 	        this.imageReady = true
 	    }
-	    this.heroImage.src = src
+	    this.heroImage.src = params.src
 	}
 }
